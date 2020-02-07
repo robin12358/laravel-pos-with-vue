@@ -11,12 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','AdminController@index');
 Route::get('/admin','AdminController@index')->name('admin.home');
 Route::get('/product_category','ProductController@productcategory')->name('admin.product.category');
 Route::get('/productcategorydata','ProductController@productcategorydata')->name('admin.product.category.data');
+Route::post('/change_prod_cate_sta/{id}','ProductController@change_prod_cate_sta')->name('admin.product.category.status');
+Route::post('/delproductcategory/{id}','ProductController@delproductcategory')->name('admin.product.category.delete');
+
+Route::get('/addsuplier','ProductController@addsuplier')->name('admin.add.suplier');
 
 Route::post('/add_category','ProductController@addproductcategory')->name('admin.add.category');
 Route::get('/product','ProductController@product')->name('admin.product.list');

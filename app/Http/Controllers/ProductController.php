@@ -14,8 +14,30 @@ class ProductController extends Controller
        return view('admin.product.product_categories');
    }
    public function addproductcategory(CategoryRequest $request){
-   			$data= $request;
-   			return $data;
+         $dat = new productcategory;
+         $dat->name = $request-> category;
+         $dat->status = 1;
+         $dat->save();
+         return $dat;
+   }
+   public function change_prod_cate_sta($id){
+          $data =productcategory::where('product_categories_id',$id)->first();
+          if($data->status == 1 ){
+            $data->status = 0;
+            $data->update();
+            return 200;
+          }
+          elseif($data->status == 0){
+            $data->status = 1;
+            $data->update();
+            return 200;
+
+          }
+   }
+   public function delproductcategory($id){
+    productcategory::where('product_categories_id',$id)->delete();
+    return "success";
+
    }
    public function product(){
        return view('admin.product.product');
@@ -50,5 +72,8 @@ class ProductController extends Controller
     $pb->save();
     return "success";
 
+   }
+   public function addsuplier(){
+     return view('admin.suplier.add');
    }
 }

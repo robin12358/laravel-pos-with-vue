@@ -89,6 +89,8 @@ class StockController extends Controller
         
     }
     public function sendstock( Request $request){
+        dd($request);
+        exit();
         $movies = $request->products;
         foreach ( $movies as $movie ) {
 

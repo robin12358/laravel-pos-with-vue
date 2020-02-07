@@ -17,7 +17,10 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('product_id');
             $table->string('product_name', 100);
             $table->integer('product_category');
-            $table->string('company_name', 100);
+            $table->string('brand_name');
+            $table->string('product_cost');
+            $table->string('product_mrp');
+            $table->string('product_tax');
             $table->string('Measurement_method', 50);
             $table->string('minmum_quantity', 50);
             $table->text('details', )->nullable();

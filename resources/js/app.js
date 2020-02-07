@@ -20,6 +20,7 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('product-component', require('./components/ProductComponent.vue').default);
+Vue.component('addsuplier-component', require('./components/AddSuplierComponent.vue').default);
 Vue.component('stockproduct-component', require('./components/StockProductComponent.vue').default);
 Vue.component('sellproduct-component', require('./components/SellproductComponent.vue').default);
 

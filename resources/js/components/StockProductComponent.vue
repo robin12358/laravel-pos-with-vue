@@ -98,7 +98,7 @@
   </div>
 
 </div>
-
+<button class="btn btn-success" @click="sendstock()" >Submit</button>
 </div>
 </div>
 </div>
@@ -134,9 +134,9 @@
 import Vuelidate from 'vuelidate';
 import { required,minLength } from  'vuelidate/lib/validators';
 Vue.use(Vuelidate)
-    export default{
-      data(){
-        return{
+      export default {
+        data(){
+            return{
             product_category:[],
             stock_name:"",
               products:[
@@ -148,46 +148,13 @@ Vue.use(Vuelidate)
                 note:'',
              }
          ]
-        }
-      },
-           validations:{
-            stock_name:{ required, minLength: minLength(3),  },
-            products:{
-              
-                      quantity:{  required  },
-              
-                  
-            },
-            
-        },
-        computed:{
-          stock_nameErrors(){
-            const errors =[];
-            if(!this.$v.stock_name.$dirty) return errors;
-            !this.$v.stock_name.required && errors.push("Stock name is required.");
-            !this.$v.stock_name.minLength && errors.push("Give the minmum required value.");
-            return errors;
-          },
-          productserrors:[
-            {
-            quantityErrors(){
-            const errors =[];
-            if(!this.$v.quantity.$dirty) return errors;
-            !this.$v.quantity.required && errors.push("Quantity is required.");
-            return errors;
-          
             }
-            }
-          ],
-         
-        },
+        },  
       methods:{
                 sendstock(){
           axios.post('/sendstock',{stock:this.stock_name,products:this.products}).then((response)=>{
             console.log(response.data);
           })
-
-          
         },
         addproduct(){
             this.products.push({

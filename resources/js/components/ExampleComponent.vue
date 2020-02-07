@@ -15,12 +15,8 @@
     <input
     class="form-control"
      v-model="data.category"
-    :error-messages="categoryErrors" 
-    required
-    @input="$v.category.$touch()"
-    @blur="$v.category.$touch()"
+   
      >
-   <label class="text-danger" v-for="data in categoryErrors ">{{data}}</label>
   </div>
  
   <button @click="submit()" class="btn btn-success">Submit</button>
@@ -50,8 +46,11 @@
                 <tbody>
                   <tr v-for="(data,index) in categorydata">
                     <td>{{data.name}}</td>
-                    <td>{{data.status}}</td>
-                    <td><button class="btn btn-danger">Delete</button></td>
+                    <td>
+                      <button v-if="data.status == 1" @click="status(data.product_categories_id,index)" class="btn btn-success">Active</button>
+                      <button v-if="data.status == 0" @click="status(data.product_categories_id,index)" class="btn btn-warning">Deactive</button>
+                    </td>
+                    <td><button @click="del(data.product_categories_id,index)"  class="btn btn-danger">Delete</button></td>
                   </tr>
                    
                  
@@ -107,6 +106,7 @@ Vue.use(Vuelidate)
                 },
                     
                     categorydata: [],   
+                    changestatus: '',
             }
         },
         methods:{
@@ -114,6 +114,7 @@ Vue.use(Vuelidate)
             if(this.data.category.length > 0){
                    axios.post('/add_category',this.data).then((response)=>{
                  console.log(response.data);
+                 this.categorydata.push(response.data)
                  this.data.category = ''
                 })
             }
@@ -123,19 +124,30 @@ Vue.use(Vuelidate)
                  this.categorydata = response.data ;
                 })
         },
+        del(get_id,index){
+          if(confirm("Do you want to delete this product category.")){
+                     axios.post(`/delproductcategory/${get_id}`).then(
+                 (response)=>this.categorydata.splice(index,1)
+                )
+                }
+        },
+        status(get_id,index){
+              
+               axios.post(`/change_prod_cate_sta/${get_id}`).then((response)=>{
+                 if(response.data == 200){
+                   if(this.categorydata[index].status == 1){
+                     this.categorydata[index].status = 0
+                   }
+                   else{
+                      this.categorydata[index].status = 1
+
+                   }
+                 }
+               
+                })
+        },
     },
-      validations:{
-            category:{ required, minLength: minLength(3),  },
-        },
-        computed:{
-          categoryErrors(){
-            const errors =[];
-            if(!this.$v.category.$dirty) return errors;
-            !this.$v.category.required && errors.push("Category is required.");
-            !this.$v.category.minLength && errors.push("Give the minmum required value.");
-            return errors;
-          }
-        },
+   
         created(){
           this.getcate();
         }
